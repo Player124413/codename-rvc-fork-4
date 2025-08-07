@@ -455,6 +455,26 @@ def inference_tab():
                     value=1,
                     interactive=True,
                 )
+                proposed_pitch = gr.Checkbox(
+                    label=i18n("Proposed Pitch"),
+                    info=i18n(
+                        "Adjust the input audio pitch to match the voice model range."
+                    ),
+                    visible=True,
+                    value=False,
+                    interactive=True,
+                )
+                proposed_pitch_threshold = gr.Slider(
+                    minimum=50.0,
+                    maximum=1200.0,
+                    label=i18n("Proposed Pitch Threshold"),
+                    info=i18n(
+                        "Male voice models typically use 155.0 and female voice models typically use 255.0."
+                    ),
+                    visible=False,
+                    value=155.0,
+                    interactive=True,
+                )
                 clean_audio = gr.Checkbox(
                     label="Audio cleanup",
                     info="Cleans your audio using noise detection algorithms, preferable for talking / speech audios.",
