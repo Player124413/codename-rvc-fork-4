@@ -330,6 +330,8 @@ class Pipeline:
         hop_length,
         f0_autotune,
         f0_autotune_strength,
+        proposed_pitch: bool = False,
+        proposed_pitch_threshold: float = 155.0,
         inp_f0=None,
     ):
         """
@@ -536,6 +538,8 @@ class Pipeline:
         hop_length,
         f0_autotune,
         f0_autotune_strength,
+        proposed_pitch,
+        proposed_pitch_threshold,
         f0_file,
     ):
         """
