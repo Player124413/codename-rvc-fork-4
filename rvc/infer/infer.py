@@ -216,6 +216,8 @@ class VoiceConverter:
         post_process: bool = False,
         resample_sr: int = 0,
         sid: int = 0,
+        proposed_pitch: bool = False,
+        proposed_pitch_threshold: float = 155.0,
         **kwargs,
     ):
         """
@@ -307,6 +309,8 @@ class VoiceConverter:
                     hop_length=hop_length,
                     f0_autotune=f0_autotune,
                     f0_autotune_strength=f0_autotune_strength,
+                    proposed_pitch=proposed_pitch,
+                    proposed_pitch_threshold=proposed_pitch_threshold,
                     f0_file=f0_file,
                 )
                 converted_chunks.append(audio_opt)
