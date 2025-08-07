@@ -456,10 +456,8 @@ def inference_tab():
                     interactive=True,
                 )
                 proposed_pitch = gr.Checkbox(
-                    label=i18n("Proposed Pitch"),
-                    info=i18n(
-                        "Adjust the input audio pitch to match the voice model range."
-                    ),
+                    label="Proposed Pitch",
+                    info="Adjust the input audio pitch to match the voice model range.",
                     visible=True,
                     value=False,
                     interactive=True,
@@ -467,10 +465,8 @@ def inference_tab():
                 proposed_pitch_threshold = gr.Slider(
                     minimum=50.0,
                     maximum=1200.0,
-                    label=i18n("Proposed Pitch Threshold"),
-                    info=i18n(
-                        "Male voice models typically use 155.0 and female voice models typically use 255.0."
-                    ),
+                    label="Proposed Pitch Threshold",
+                    info="Male voice models typically use 155.0 and female voice models typically use 255.0.",
                     visible=False,
                     value=155.0,
                     interactive=True,
@@ -1092,10 +1088,8 @@ def inference_tab():
                     interactive=True,
                 )
                 proposed_pitch_batch = gr.Checkbox(
-                    label=i18n("Proposed Pitch"),
-                    info=i18n(
-                        "Adjust the input audio pitch to match the voice model range."
-                    ),
+                    label="Proposed Pitch",
+                    info="Adjust the input audio pitch to match the voice model range.",
                     visible=True,
                     value=False,
                     interactive=True,
@@ -1103,10 +1097,8 @@ def inference_tab():
                 proposed_pitch_threshold_batch = gr.Slider(
                     minimum=50.0,
                     maximum=1200.0,
-                    label=i18n("Proposed Pitch Threshold"),
-                    info=i18n(
-                        "Male voice models typically use 155.0 and female voice models typically use 255.0."
-                    ),
+                    label="Proposed Pitch Threshold",
+                    info="Male voice models typically use 155.0 and female voice models typically use 255.0.",
                     visible=False,
                     value=155.0,
                     interactive=True,
