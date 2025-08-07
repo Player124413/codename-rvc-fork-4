@@ -65,6 +65,8 @@ def run_infer_script(
     split_audio: bool,
     f0_autotune: bool,
     f0_autotune_strength: float,
+    proposed_pitch: bool,
+    proposed_pitch_threshold: float,
     clean_audio: bool,
     clean_strength: float,
     export_format: str,
