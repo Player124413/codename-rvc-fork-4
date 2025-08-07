@@ -408,6 +408,37 @@ class Pipeline:
         f0_mel[f0_mel <= 1] = 1
         f0_mel[f0_mel > 255] = 255
         f0_coarse = np.rint(f0_mel).astype(int)
+        elif proposed_pitch is True:
+            limit = 12
+            # calculate median f0 of the audio
+            _f0 = np.where(f0 == 0, np.nan, f0)
+            _f0 = float(
+                np.median(
+                    np.interp(
+                        np.arange(len(_f0)),
+                        np.where(~np.isnan(_f0))[0],
+                        f0[~np.isnan(_f0)],
+                    )
+                )
+            )
+            # calculate proposed shift
+            up_key = max(
+                -limit,
+                min(limit, int(np.round(12 * np.log2(proposed_pitch_threshold / _f0)))),
+            )
+            print("calculated pitch offset:", up_key)
+            f0 *= pow(2, (pitch + up_key) / 12)
+        else:
+            f0 *= pow(2, pitch / 12)
+        # quantizing f0 to 255 buckets to make coarse f0
+        f0bak = f0.copy()
+        f0_mel = 1127 * np.log(1 + f0 / 700)
+        f0_mel[f0_mel > 0] = (f0_mel[f0_mel > 0] - self.f0_mel_min) * 254 / (
+            self.f0_mel_max - self.f0_mel_min
+        ) + 1
+        f0_mel[f0_mel <= 1] = 1
+        f0_mel[f0_mel > 255] = 255
+        f0_coarse = np.rint(f0_mel).astype(int)
 
         return f0_coarse, f0bak
 
@@ -629,6 +660,8 @@ class Pipeline:
                 hop_length,
                 f0_autotune,
                 f0_autotune_strength,
+                proposed_pitch,
+                proposed_pitch_threshold,
                 inp_f0,
             )
             pitch = pitch[:p_len]
