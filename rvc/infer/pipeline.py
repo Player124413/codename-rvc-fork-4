@@ -386,28 +386,6 @@ class Pipeline:
 
         if f0_autotune is True:
             f0 = Autotune.autotune_f0(self, f0, f0_autotune_strength)
-
-        f0 *= pow(2, pitch / 12)
-        tf0 = self.sample_rate // self.window
-        if inp_f0 is not None:
-            delta_t = np.round(
-                (inp_f0[:, 0].max() - inp_f0[:, 0].min()) * tf0 + 1
-            ).astype("int16")
-            replace_f0 = np.interp(
-                list(range(delta_t)), inp_f0[:, 0] * 100, inp_f0[:, 1]
-            )
-            shape = f0[self.x_pad * tf0 : self.x_pad * tf0 + len(replace_f0)].shape[0]
-            f0[self.x_pad * tf0 : self.x_pad * tf0 + len(replace_f0)] = replace_f0[
-                :shape
-            ]
-        f0bak = f0.copy()
-        f0_mel = 1127 * np.log(1 + f0 / 700)
-        f0_mel[f0_mel > 0] = (f0_mel[f0_mel > 0] - self.f0_mel_min) * 254 / (
-            self.f0_mel_max - self.f0_mel_min
-        ) + 1
-        f0_mel[f0_mel <= 1] = 1
-        f0_mel[f0_mel > 255] = 255
-        f0_coarse = np.rint(f0_mel).astype(int)
         elif proposed_pitch is True:
             limit = 12
             # calculate median f0 of the audio
