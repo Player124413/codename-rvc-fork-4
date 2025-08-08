@@ -135,7 +135,7 @@ class Config:
         self.gpu_name = torch.cuda.get_device_name(i_device)
         low_end_gpus = [
             "16", "P40", "P10", "1050", "1060", "1070", "1080", 
-            "2050", "2060", "2070", "2080", "TITAN RTX"
+            "2050", "2060", "2070", "2080", "TITAN RTX", "Tesla T4"
         ]
 
         if (
