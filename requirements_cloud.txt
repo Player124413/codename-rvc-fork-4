@@ -26,7 +26,7 @@ PyWavelets==1.8.0
 # Machine learning and deep learning
 numba==0.61.0
 torch==2.5.0
-torchaudio==2.7.1
+torchaudio==2.5.0
 torchvision==0.22.1
 torchcrepe==0.0.23
 torchfcpe
