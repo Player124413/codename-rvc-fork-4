@@ -41,7 +41,6 @@ triton==3.2.0
 matplotlib==3.7.2
 tensorboard
 gradio==5.23.1
-jupyter-ui-poll
 # Miscellaneous utilities
 tensorboardX
 edge-tts==6.1.9
