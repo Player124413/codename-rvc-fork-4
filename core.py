@@ -65,6 +65,8 @@ def run_infer_script(
     split_audio: bool,
     f0_autotune: bool,
     f0_autotune_strength: float,
+    proposed_pitch: bool,
+    proposed_pitch_threshold: float,
     clean_audio: bool,
     clean_strength: float,
     export_format: str,
@@ -129,6 +131,8 @@ def run_infer_script(
         "split_audio": split_audio,
         "f0_autotune": f0_autotune,
         "f0_autotune_strength": f0_autotune_strength,
+        "proposed_pitch": proposed_pitch,
+        "proposed_pitch_threshold": proposed_pitch_threshold,
         "clean_audio": clean_audio,
         "clean_strength": clean_strength,
         "export_format": export_format,
@@ -201,6 +205,8 @@ def run_batch_infer_script(
     split_audio: bool,
     f0_autotune: bool,
     f0_autotune_strength: float,
+    proposed_pitch: bool,
+    proposed_pitch_threshold: float,
     clean_audio: bool,
     clean_strength: float,
     export_format: str,
@@ -265,6 +271,8 @@ def run_batch_infer_script(
         "split_audio": split_audio,
         "f0_autotune": f0_autotune,
         "f0_autotune_strength": f0_autotune_strength,
+        "proposed_pitch": proposed_pitch,
+        "proposed_pitch_threshold": proposed_pitch_threshold,
         "clean_audio": clean_audio,
         "clean_strength": clean_strength,
         "export_format": export_format,
@@ -340,6 +348,8 @@ def run_tts_script(
     split_audio: bool,
     f0_autotune: bool,
     f0_autotune_strength: float,
+    proposed_pitch: bool,
+    proposed_pitch_threshold: float,
     clean_audio: bool,
     clean_strength: float,
     export_format: str,
@@ -385,6 +395,8 @@ def run_tts_script(
         split_audio=split_audio,
         f0_autotune=f0_autotune,
         f0_autotune_strength=f0_autotune_strength,
+        proposed_pitch=proposed_pitch,
+        proposed_pitch_threshold=proposed_pitch_threshold,
         clean_audio=clean_audio,
         clean_strength=clean_strength,
         export_format=export_format,
@@ -776,6 +788,22 @@ def parse_arguments():
         help=f0_autotune_strength_description,
         choices=[(i / 10) for i in range(11)],
         default=1.0,
+    )
+    proposed_pitch_description = "Proposed Pitch"
+    infer_parser.add_argument(
+        "--proposed_pitch",
+        type=bool,
+        help=proposed_pitch_description,
+        choices=[True, False],
+        default=False,
+    )
+    proposed_pitch_threshold_description = "Proposed Pitch Threshold"
+    infer_parser.add_argument(
+        "--proposed_pitch_threshold",
+        type=float,
+        help=proposed_pitch_threshold_description,
+        choices=[i for i in range(50, 1200)],
+        default=155.0,
     )
     clean_audio_description = "Clean the output audio using noise reduction algorithms. Recommended for speech conversions."
     infer_parser.add_argument(
@@ -1299,6 +1327,22 @@ def parse_arguments():
         choices=[(i / 10) for i in range(11)],
         default=1.0,
     )
+    proposed_pitch_description = "Proposed Pitch adjustment"
+    batch_infer_parser.add_argument(
+        "--proposed_pitch",
+        type=bool,
+        help=proposed_pitch_description,
+        choices=[True, False],
+        default=False,
+    )
+    proposed_pitch_threshold_description = "Proposed Pitch adjustment value"
+    batch_infer_parser.add_argument(
+        "--proposed_pitch_threshold",
+        type=float,
+        help=proposed_pitch_threshold_description,
+        choices=[i for i in range(50, 1200)],
+        default=155.0,
+    )
     batch_infer_parser.add_argument(
         "--clean_audio",
         type=lambda x: bool(strtobool(x)),
@@ -1786,6 +1830,22 @@ def parse_arguments():
         help=clean_strength_description,
         choices=[(i / 10) for i in range(11)],
         default=1.0,
+    )
+    proposed_pitch_description = "Proposed Pitch adjustment"
+    batch_infer_parser.add_argument(
+        "--proposed_pitch",
+        type=bool,
+        help=proposed_pitch_description,
+        choices=[True, False],
+        default=False,
+    )
+    proposed_pitch_threshold_description = "Proposed Pitch adjustment value"
+    batch_infer_parser.add_argument(
+        "--proposed_pitch_threshold",
+        type=float,
+        help=proposed_pitch_threshold_description,
+        choices=[i for i in range(50, 1200)],
+        default=155.0,
     )
     tts_parser.add_argument(
         "--clean_audio",
@@ -2343,6 +2403,8 @@ def main():
                 split_audio=args.split_audio,
                 f0_autotune=args.f0_autotune,
                 f0_autotune_strength=args.f0_autotune_strength,
+                proposed_pitch=args.proposed_pitch,
+                proposed_pitch_threshold=args.proposed_pitch_threshold,
                 clean_audio=args.clean_audio,
                 clean_strength=args.clean_strength,
                 export_format=args.export_format,
@@ -2406,6 +2468,8 @@ def main():
                 split_audio=args.split_audio,
                 f0_autotune=args.f0_autotune,
                 f0_autotune_strength=args.f0_autotune_strength,
+                proposed_pitch=args.proposed_pitch,
+                proposed_pitch_threshold=args.proposed_pitch_threshold,
                 clean_audio=args.clean_audio,
                 clean_strength=args.clean_strength,
                 export_format=args.export_format,
@@ -2473,6 +2537,8 @@ def main():
                 split_audio=args.split_audio,
                 f0_autotune=args.f0_autotune,
                 f0_autotune_strength=args.f0_autotune_strength,
+                proposed_pitch=args.proposed_pitch,
+                proposed_pitch_threshold=args.proposed_pitch_threshold,
                 clean_audio=args.clean_audio,
                 clean_strength=args.clean_strength,
                 export_format=args.export_format,
