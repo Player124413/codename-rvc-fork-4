@@ -173,6 +173,22 @@ def tts_tab():
                 value=1,
                 interactive=True,
             )
+            proposed_pitch = gr.Checkbox(
+                label="Proposed Pitch",
+                info="Adjust the input audio pitch to match the voice model range.",
+                visible=True,
+                value=False,
+                interactive=True,
+            )
+            proposed_pitch_threshold = gr.Slider(
+                minimum=50.0,
+                maximum=1200.0,
+                label="Proposed Pitch Threshold",
+                info="Male voice models typically use 155.0 and female voice models typically use 255.0.",
+                visible=False,
+                value=155.0,
+                interactive=True,
+            )
             clean_audio = gr.Checkbox(
                 label="Clean Audio",
                 info="Clean your audio output using noise detection algorithms, recommended for speaking audios.",
@@ -334,6 +350,11 @@ def tts_tab():
         inputs=[autotune],
         outputs=[autotune_strength],
     )
+    proposed_pitch.change(
+        fn=toggle_visible,
+        inputs=[proposed_pitch],
+        outputs=[proposed_pitch_threshold],
+    )
     clean_audio.change(
         fn=toggle_visible,
         inputs=[clean_audio],
@@ -386,6 +407,8 @@ def tts_tab():
             split_audio,
             autotune,
             autotune_strength,
+            proposed_pitch,
+            proposed_pitch_threshold,
             clean_audio,
             clean_strength,
             export_format,
