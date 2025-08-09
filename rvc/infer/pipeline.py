@@ -330,6 +330,8 @@ class Pipeline:
         hop_length,
         f0_autotune,
         f0_autotune_strength,
+        proposed_pitch: bool = False,
+        proposed_pitch_threshold: float = 155.0,
         inp_f0=None,
     ):
         """
@@ -384,20 +386,29 @@ class Pipeline:
 
         if f0_autotune is True:
             f0 = Autotune.autotune_f0(self, f0, f0_autotune_strength)
-
-        f0 *= pow(2, pitch / 12)
-        tf0 = self.sample_rate // self.window
-        if inp_f0 is not None:
-            delta_t = np.round(
-                (inp_f0[:, 0].max() - inp_f0[:, 0].min()) * tf0 + 1
-            ).astype("int16")
-            replace_f0 = np.interp(
-                list(range(delta_t)), inp_f0[:, 0] * 100, inp_f0[:, 1]
+        elif proposed_pitch is True:
+            limit = 12
+            # calculate median f0 of the audio
+            _f0 = np.where(f0 == 0, np.nan, f0)
+            _f0 = float(
+                np.median(
+                    np.interp(
+                        np.arange(len(_f0)),
+                        np.where(~np.isnan(_f0))[0],
+                        f0[~np.isnan(_f0)],
+                    )
+                )
             )
-            shape = f0[self.x_pad * tf0 : self.x_pad * tf0 + len(replace_f0)].shape[0]
-            f0[self.x_pad * tf0 : self.x_pad * tf0 + len(replace_f0)] = replace_f0[
-                :shape
-            ]
+            # calculate proposed shift
+            up_key = max(
+                -limit,
+                min(limit, int(np.round(12 * np.log2(proposed_pitch_threshold / _f0)))),
+            )
+            print("calculated pitch offset:", up_key)
+            f0 *= pow(2, (pitch + up_key) / 12)
+        else:
+            f0 *= pow(2, pitch / 12)
+        # quantizing f0 to 255 buckets to make coarse f0
         f0bak = f0.copy()
         f0_mel = 1127 * np.log(1 + f0 / 700)
         f0_mel[f0_mel > 0] = (f0_mel[f0_mel > 0] - self.f0_mel_min) * 254 / (
@@ -536,6 +547,8 @@ class Pipeline:
         hop_length,
         f0_autotune,
         f0_autotune_strength,
+        proposed_pitch,
+        proposed_pitch_threshold,
         f0_file,
     ):
         """
@@ -625,6 +638,8 @@ class Pipeline:
                 hop_length,
                 f0_autotune,
                 f0_autotune_strength,
+                proposed_pitch,
+                proposed_pitch_threshold,
                 inp_f0,
             )
             pitch = pitch[:p_len]
