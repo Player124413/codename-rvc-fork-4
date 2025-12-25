@@ -26,9 +26,9 @@ PyWavelets==1.8.0
 
 # Machine learning and deep learning
 numba==0.61.0
-torch==2.7.1
-torchaudio==2.7.1
-torchvision==0.22.1
+torch
+torchaudio
+torchvision
 torchcrepe==0.0.23
 torchfcpe
 torch-optimizer
@@ -36,7 +36,7 @@ einop
 transformers==4.44.2
 nnaudio==0.3.3
 ring-attention-pytorch @ https://github.com/codename0og/codename-essentials/raw/refs/heads/main/ring_attention_pytorch-0.5.17-py3-none-any.whl
-triton==3.2.0
+triton==3.2.0.post21
 
 # Visualization and UI
 matplotlib==3.7.2
