@@ -281,7 +281,7 @@ else:
     initial_optimizer = "AdamW"
     initial_optimizer_choices = ["AdamW", "RAdam", "AdamSPD", "Ranger21", "DiffGrad", "Prodigy"]
     architecture_choices = ["RVC", "Fork/Applio", "Fork"]
-    fp16_check = True
+    fp16_check = False
 
 # FP16 checker
 if fp16_check:
